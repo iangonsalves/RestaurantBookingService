@@ -63,7 +63,7 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
-Access the project at `http://127.0.0.1:8000/`
+Access the project at `https://restaurantbookingservice.onrender.com`
 
 ## Endpoints
 - Home Page: `/`

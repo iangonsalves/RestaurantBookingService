@@ -84,8 +84,6 @@ DATABASES = {
     'default': env.db(),
 }
 
-# The settings for media files have been updated for the Graded assessment
-MEDIA_URL = '/media/'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -121,11 +119,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# The settings for static files have been updated for the Graded assessment
-STATIC_URL = 'static/'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    "restaurant/static",
+    os.path.join(BASE_DIR, 'restaurant', 'static'),
 ]
 
 # Default primary key field type
