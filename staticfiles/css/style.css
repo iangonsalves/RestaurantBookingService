@@ -189,6 +189,10 @@ footer img {
     margin-left: 10px;
     border: 2px solid black;
     border-radius: 5px;
+    height:auto;
+    max-height: 800px;
+    width: 100%;
+    max-width: 900px; 
 }
 footer p {
     border-top: #333333;
