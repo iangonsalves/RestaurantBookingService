@@ -23,8 +23,14 @@ def reservations(request):
     return render(request, 'bookings.html',{"bookings":booking_json})
 
 def all_reservations(request):
+    #Collect Expired Bookings
+    expired_bookings = Booking.objects.filter(reservation_date___lt=datetime.date.today())
+    #Delete Expired Bookings
+    expired_bookings.delete()
+    
+    #Collect all current bookings available
     bookings = Booking.objects.exclude(first_name__isnull=True).exclude(reservation_date__isnull=True).exclude(reservation_slot__isnull=True)
-    # booking_json = serializers.serialize('json', bookings)
+
     return render(request, 'bookings.html', {'bookings': bookings})
 
 def book(request):
