@@ -51,10 +51,19 @@ def book(request):
     return render(request, 'book.html', context)
 
 def menu(request):
-    """Display the restaurant's menu items."""
-    menu_data = Menu.objects.all()
-    main_data = {"menu": menu_data}
-    return render(request, 'menu.html', {"menu": main_data})
+    """Display the restaurant's menu items grouped by category."""
+    # Get all menu items in a single query
+    menu_items = Menu.objects.all()
+    
+    # Group items by category in Python instead of making multiple DB queries
+    menu_by_category = {
+        'Appetizers': [item for item in menu_items if item.category == 'APP'],
+        'Main Menu': [item for item in menu_items if item.category == 'MAIN'],
+        'Desserts': [item for item in menu_items if item.category == 'DESS'],
+        'Drinks': [item for item in menu_items if item.category == 'DRINK'],
+    }
+    
+    return render(request, 'menu.html', {"menu_by_category": menu_by_category})
 
 
 def display_menu_item(request, pk=None): 

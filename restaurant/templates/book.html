@@ -52,8 +52,9 @@
 <script>
  // Set today's date as default
 const date = new Date();
-document.getElementById('reservation_date').value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, "0")}`;
-console.log(document.getElementById('reservation_date').value);
+const formattedDate = date.toISOString().split('T')[0]; // This ensures YYYY-MM-DD format
+document.getElementById('reservation_date').value = formattedDate;
+document.getElementById('today').innerHTML = formattedDate;
 getBookings();
 
 // Listen for changes in reservation date and update available slots and bookings
@@ -66,20 +67,29 @@ function getBookings() {
     
     // Fetch bookings and available slots from the backend
     fetch("/bookings?date=" + date)
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
-        reserved_slots = data.reserved_slots; // Get the reserved slots as numbers
+        reserved_slots = data.reserved_slots || []; // Get the reserved slots as numbers
         let bookings = "";
 
         // Parse bookings and reserved slots
-        for (const item of data.bookings) {
-            reserved_slots.push(item.reservation_slot);  // Directly access reservation_slot
-            bookings += `<p>${item.first_name} - ${formatTime(item.reservation_slot)}</p>`;
+        if (data.bookings) {
+            for (const item of data.bookings) {
+                if (item.reservation_slot) {
+                    reserved_slots.push(item.reservation_slot);
+                    bookings += `<p>${item.first_name} - ${formatTime(item.reservation_slot)}</p>`;
+                }
+            }
         }
 
         // Generate available slot options
-        let slot_options = '<option value="" disabled>Select time</option>';
-        const available_slots = data.available_slots; // Get the available slots
+        let slot_options = '<option value="" disabled selected>Select time</option>';
+        const available_slots = data.available_slots || []; // Get the available slots
 
         for (let time of available_slots) {
             const label = formatTime(time);
@@ -93,33 +103,55 @@ function getBookings() {
         // Update the slot options and bookings
         document.getElementById('reservation_slot').innerHTML = slot_options;
         document.getElementById('bookings').innerHTML = bookings || "No bookings";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('bookings').innerHTML = "Error loading bookings";
     });
-
 }
 
 function formatTime(time) {
+    if (!time) return '';
     const ampm = time < 12 ? 'AM' : 'PM';
     const t = time < 12 ? time : time > 12 ? time - 12 : time;
     return `${t} ${ampm}`;
 }
 
 // Handle form submission
-document.getElementById('button').addEventListener('click', function (e) {
+document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent the default form submission
+    
     const formdata = {
         first_name: document.getElementById('first_name').value,
         reservation_date: document.getElementById('reservation_date').value,
-        reservation_slot: document.getElementById('reservation_slot').value,
+        reservation_slot: parseInt(document.getElementById('reservation_slot').value),
     };
 
-    fetch("{% url 'bookings' %}", { method: 'POST', body: JSON.stringify(formdata) })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert("Slot already booked!");
-            } else {
-                getBookings(); // Refresh the bookings
-            }
-        });
+    fetch("{% url 'bookings' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formdata)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            getBookings(); // Refresh the bookings
+            document.getElementById('form').reset(); // Reset the form
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while making the reservation');
+    });
 });
 </script>
 {% endblock %}

@@ -78,5 +78,9 @@ Access the project at `https://restaurantbookingservice.onrender.com`
 ## Database
 The project uses environment variables for database configuration. Make sure to set up your environment variables in a `.env` file with the appropriate database credentials.
 
+##Admin Access
+Admin page has credentials as follows:
+UserName: adminuser
+Password: adminuser@123 
 ---
 Enjoy managing your booking reservations with Little Lemon! 🍋
