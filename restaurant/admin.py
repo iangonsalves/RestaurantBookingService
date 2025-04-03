@@ -1,8 +1,13 @@
+"""
+Django admin configuration for the restaurant app.
+
+This module registers models to be managed through the Django admin interface.
+"""
+
 from django.contrib import admin
 
 # Register your models here.
 from .models import Menu
-from .models import Booking
 
 
 admin.site.register(Menu)

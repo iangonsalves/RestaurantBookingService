@@ -7,23 +7,28 @@ from .models import Booking
 from datetime import datetime, date
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, JsonResponse
-from django.utils.dateparse import parse_date
+from django.http import JsonResponse
 
 
-# Create your views here.
 def home(request):
+    """Render the home page of the restaurant website."""
     return render(request, 'index.html')
 
 def about(request):
+    """Render the about page of the restaurant website."""
     return render(request, 'about.html')
 
 def reservations(request):
+    """Display all reservations in JSON format on the bookings page."""
     bookings = Booking.objects.all()
     booking_json = serializers.serialize('json', bookings)
     return render(request, 'bookings.html',{"bookings":booking_json})
 
 def all_reservations(request):
+    """Display current active reservations and clean up expired bookings.
+    
+    Deletes expired bookings and shows all valid current reservations.
+    """
     #Collect Expired Bookings and delete them
     Booking.objects.filter(reservation_date__lt=date.today()).delete()
 
@@ -33,6 +38,10 @@ def all_reservations(request):
     return render(request, 'bookings.html', {'bookings': bookings})
 
 def book(request):
+    """Handle the booking form submission and display.
+    
+    Displays the booking form and processes POST requests to create new bookings.
+    """
     form = BookingForm()
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -42,12 +51,18 @@ def book(request):
     return render(request, 'book.html', context)
 
 def menu(request):
+    """Display the restaurant's menu items."""
     menu_data = Menu.objects.all()
     main_data = {"menu": menu_data}
     return render(request, 'menu.html', {"menu": main_data})
 
 
 def display_menu_item(request, pk=None): 
+    """Display details of a specific menu item.
+    
+    Args:
+        pk (int, optional): Primary key of the menu item to display.
+    """
     if pk: 
         menu_item = Menu.objects.get(pk=pk) 
     else: 
@@ -56,6 +71,14 @@ def display_menu_item(request, pk=None):
 
 @csrf_exempt
 def bookings(request):
+    """Handle booking-related API endpoints.
+    
+    GET: Returns available and booked slots for a specific date
+    POST: Creates a new booking if the slot is available
+    
+    Returns:
+        JsonResponse: Contains booking data, available slots, and reserved slots
+    """
     if request.method == 'POST':
         try:
             data = json.loads(request.body)  # Read JSON body safely

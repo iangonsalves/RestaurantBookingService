@@ -4,7 +4,7 @@ Little Lemon is a restaurant booking system built with Django that allows users 
 
 ## Project Structure
 ```
-finalbookingexercise/
+restaurantbookingservice/
 ├── littlelemon/            # Project folder
 │   ├── __init__.py
 │   ├── asgi.py
@@ -25,7 +25,10 @@ finalbookingexercise/
 │   ├── urls.py
 │   └── views.py
 │
-└── virtualenv/             # Virtual environment
+├── staticfiles/            # Collected static files
+├── restaurantbookingenv/   # Virtual environment
+├── requirements.txt        # Project dependencies
+└── manage.py              # Django management script
 ```
 
 ## Features
@@ -44,13 +47,13 @@ cd restaurantbookingservice
 
 2. **Activate the virtual environment:**
 ```bash
-source ../virtualenv/bin/activate  # MacOS/Linux
-..\virtualenv\Scripts\activate    # Windows
+source restaurantbookingenv/bin/activate  # MacOS/Linux
+restaurantbookingenv\Scripts\activate    # Windows
 ```
 
 3. **Install dependencies:**
 ```bash
-pipenv install
+pip install -r requirements.txt
 ```
 
 4. **Run migrations:**
@@ -73,7 +76,7 @@ Access the project at `https://restaurantbookingservice.onrender.com`
 - Reservations Page: `/reservations/`
 
 ## Database
-The project uses MySQL for handling reservations. Ensure the database is properly configured in `settings.py`.
+The project uses environment variables for database configuration. Make sure to set up your environment variables in a `.env` file with the appropriate database credentials.
 
 ---
-Enjoy managing your reservations with Little Lemon! 🍋
+Enjoy managing your booking reservations with Little Lemon! 🍋

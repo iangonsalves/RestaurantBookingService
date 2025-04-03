@@ -1,12 +1,38 @@
+"""
+Forms for the restaurant app.
+
+This module contains form classes for handling restaurant-related data input and validation.
+"""
+
 from django import forms
 from .models import Booking
 
 class BookingForm(forms.ModelForm):
+    """
+    Form for handling restaurant table bookings.
+    
+    This form manages the creation and validation of table reservations,
+    including duplicate booking checks and required field validation.
+    """
+    
     class Meta:
         model = Booking
         fields = ["first_name", "reservation_date", "reservation_slot"]
 
     def clean(self):
+        """
+        Validate the form data.
+        
+        Performs the following validations:
+        - Checks if all required fields are filled
+        - Verifies no duplicate bookings exist for the same date and time slot
+        
+        Returns:
+            dict: The cleaned form data
+            
+        Raises:
+            forms.ValidationError: If any validation fails
+        """
         cleaned_data = super().clean()
 
         # Validate fields
