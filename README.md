@@ -2,6 +2,11 @@
 
 Little Lemon is a restaurant booking system built with Django that allows users to place bookings, view reservations, and manage their restaurant appointments.
 
+
+<img width="1619" alt="restaurant" src="https://github.com/user-attachments/assets/1be47056-d40a-4349-9b97-d17673eeff50" />
+
+
+
 ## Project Structure
 ```
 restaurantbookingservice/
