@@ -2,24 +2,34 @@
 
 Little Lemon is a restaurant booking system built with Django that allows users to place bookings, view reservations, and manage their restaurant appointments.
 
+## Live Demo
+
+Application URL:  
+https://restaurantbookingservice.onrender.com/
 
 <img width="1619" alt="restaurant" src="https://github.com/user-attachments/assets/1be47056-d40a-4349-9b97-d17673eeff50" />
 
+## Tech Stack
 
+Backend: Django (Python)  
+Frontend: Django Templates, HTML, CSS  
+Database: PostgreSQL  
+Deployment: Render
 
 ## Project Structure
 ```
 restaurantbookingservice/
-├── littlelemon/            # Project folder
+│
+├── littlelemon/            # Django project configuration
 │   ├── __init__.py
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
 │
-├── restaurant/             # App folder
-│   ├── migrations/         # Django migrations
-│   ├── static/             # Static files (CSS, JS, Images)
+├── restaurant/             # Main application
+│   ├── migrations/
+│   ├── static/             # CSS, JavaScript, images
 │   ├── templates/          # HTML templates
 │   ├── __init__.py
 │   ├── admin.py
@@ -30,48 +40,21 @@ restaurantbookingservice/
 │   ├── urls.py
 │   └── views.py
 │
-├── staticfiles/            # Collected static files
-├── restaurantbookingenv/   # Virtual environment
-├── requirements.txt        # Project dependencies
-└── manage.py              # Django management script
+├── requirements.txt        # Python dependencies
+└── manage.py               # Django management script
 ```
 
-## Features
-- **Home Page:** Welcomes users to Little Lemon.
-- **About Page:** Provides details about the restaurant.
-- **About Page:** Provides details about the current menu.
-- **Booking Page:** Allows users to place a booking and view existing bookings for a selected date.
-- **Reservations Page:** Displays all reservations placed at the restaurant.
+## Key Features
 
-## Setup Instructions
-1. **Clone the repository:**
-```bash
-git clone <repository-url>
-cd restaurantbookingservice
-```
+- User authentication and account management
+- Restaurant information and menu pages
+- Online reservation system for selecting booking dates
+- View existing bookings for selected dates
+- Reservation listing for restaurant staff 
+- Server-rendered web pages using Django templates  
+- PostgreSQL database integration  
+- Deployed on Render cloud platform
 
-2. **Activate the virtual environment:**
-```bash
-source restaurantbookingenv/bin/activate  # MacOS/Linux
-restaurantbookingenv\Scripts\activate    # Windows
-```
-
-3. **Install dependencies:**
-```bash
-pip install -r requirements.txt
-```
-
-4. **Run migrations:**
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-5. **Run the server:**
-```bash
-python manage.py runserver
-```
-Access the project at `https://restaurantbookingservice.onrender.com`
 
 ## Endpoints
 - Home Page: `/`
@@ -80,8 +63,55 @@ Access the project at `https://restaurantbookingservice.onrender.com`
 - Booking Page: `/book/`
 - Reservations Page: `/reservations/`
 
+
+## Local Development Setup
+1. **Clone the repository:**
+```bash
+git clone https://github.com/iangonsalves/RestaurantBookingService.git
+```
+
+2. **Create the virtual environment:**
+```bash
+python -m venv venv 
+```
+
+3. **Activate the environment:**
+```bash
+Mac/Linux:
+source venv/bin/activate
+
+Windows:
+venv\Scripts\activate
+```
+4. **Install dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+5. **Run migrations:**
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+6. **Start the development server::**
+```bash
+python manage.py runserver
+```
+
+7. **Open in browser:**
+```bash
+http://127.0.0.1:8000
+```
+
+
 ## Database
-The project uses environment variables for database configuration. Make sure to set up your environment variables in a `.env` file with the appropriate database credentials.
+The project uses environment variables for database configuration. Create a `.env` file and configure the required database credentials for your local environment.
+
+
+## Deployment
+The application is deployed using Render.
+The platform installs dependencies from `requirements.txt` and runs the Django application automatically
 
 ---
-Enjoy managing your booking reservations with Little Lemon! 🍋
+Enjoy managing your booking reservations with Little Lemon!
